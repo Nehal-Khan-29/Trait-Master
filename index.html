@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/css.css">
+    <link rel="stylesheet" href="assets/css/css2.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+
+    <link rel="icon" href="assets/img/default_profile.png" type="image/x-icon">
+    <title>Trait Master</title>
+</head>  
+
+<body>
+    
+    <div class="main">
+        
+        <div class="nav">
+            <div class="nav_title">
+                <img src="assets/img/default_profile.png" class="google_profile">
+                <div class="nav_add">
+                    <i class="fa-solid fa-plus add_trait" onclick="add_trait_func()"></i>
+                </div>
+            </div>
+
+            <p class="no_trait_warn">No traits set up yet.</p>
+
+            <div class="trait_list">
+                <!-- <div class="trait_title">
+                    <i class="fa-solid fa-angle-right"></i>
+                    <div>Trait 1</div>
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </div> -->
+            </div>
+        </div>
+
+        <div class="calendar_body">
+
+            <i class="fa-solid fa-pencil edit_trait" onclick="editTrait()"></i>
+
+            <div class="edit_trait_dialogbox">
+                <div class="rename_trait">
+                    <i>Trait : </i>
+                    <input type="text">
+                    <div class="rename">Rename</div>
+                </div>
+                <div class="task_add">
+                    <i>Task : </i>
+                    <input type="text">
+                    <i class="fa-solid fa-plus add_task" onclick=""></i>
+                </div>
+                <br>
+                <div class="task_list">
+                    <!-- <div class="task_element">
+                        <span>New Task</span>
+                        <div class="task_icons">
+                            <i class="fa-solid fa-pencil rename_task"></i>
+                            <i class="fa-solid fa-trash delete_task"></i>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+
+            <div class="calendar_list">
+                <!-- <div class="calendar_wrapper">
+                </div> -->
+            </div>
+
+            <i class="fa-solid fa-trash delete_trait" onclick="deleteTrait()"></i>
+            
+        </div>
+
+    </div>
+
+<script src="assets/js/js.js"></script> 
+</body>
+
+</html>

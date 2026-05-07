@@ -1,0 +1,327 @@
+/*================================================================ Html ================================================================*/
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Outfit", serif;
+    text-decoration: none;
+    outline: none;
+}
+
+html{
+    scroll-behavior: smooth;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+/*================================================================ Scrool ===============================================================*/
+
+::-webkit-scrollbar {
+    width: 12px; 
+  }
+
+::-webkit-scrollbar-track {
+    display: none;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(95, 170, 245);
+    border-radius: 6px; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(0, 34, 69);
+}
+
+/*================================================================ Main ===============================================================*/
+
+.main {
+    display: flex;
+    height: 100vh;
+}
+
+/*================================================================ Nav ===============================================================*/
+
+.nav {
+    width: 350px;
+    box-shadow: 2px 4px 10px rgba(0,0,0,0.2);
+    background: linear-gradient(180deg,white, rgba(0, 128, 255, 0.2));
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease;
+    z-index: 1;
+}
+
+.nav.closed {
+    transform: translateX(-100%);
+}
+
+.nav.opened {
+    transform: translateX(100%);
+}
+
+.navbar_setting {
+    position: absolute;
+    z-index: 10;
+}
+
+.nav_title {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 50px;
+    padding: 20px;
+}
+
+.fa-bars, .fa-plus{
+    width: 50px;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-content: center;
+    border-radius: 100%;
+    box-shadow: 2px 4px 10px rgba(0,0,0,0.2);
+    font-size: large;
+    color: rgb(0, 128, 255);
+    cursor: pointer;
+}
+
+.fa-bars{
+    position: absolute;
+}
+
+.add_trait:hover , .navbar_setting:hover{
+    transform: scale(1.1);
+}
+
+.nav_add{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+
+.no_trait_warn{
+    color: grey;
+    font-style: italic;
+    padding-left: 20px;
+}
+
+.trait_list{
+    display: flex;
+    flex-direction: column;
+    scrollbar-width: none;
+    height: 600px;
+    overflow-y:scroll;
+}
+
+.trait_title{
+    padding: 10px 20px 10px 20px;
+    gap: 10px;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(-90deg,white, rgba(0, 128, 255, 0.2));
+}
+
+.trait_title:hover{
+    background-color: rgb(0, 128, 255);
+    color: white;
+}
+
+.trait_title.active {
+    background-color: rgb(0, 128, 255);
+    color: white;
+}
+
+.google_profile{
+    width:50px;
+    height:50px;
+    border-radius:100%;
+    cursor:pointer;
+    object-fit:fill;
+    box-shadow: 2px 4px 10px rgba(0,0,0,0.2);
+}
+
+.google_profile:hover{
+    transform:scale(1.1);
+}
+
+/*================================================================ Calendar ===============================================================*/
+
+.calendar_body {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(90deg,white, rgba(0, 128, 255, 0.2));
+    background-color: rgb(0, 128, 255);
+    z-index: 0;
+}
+
+.edit_trait, .delete_trait{
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-content: center;
+    border-radius: 100%;
+    box-shadow: 2px 4px 10px rgba(0,0,0,0.2);
+    font-size: large;
+    color: rgb(0, 128, 255);
+    cursor: pointer;
+    background-color: white;
+}
+
+.calendar_list{
+    margin-top: 100px;
+    height: 600px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.calendar_container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.delete_trait{
+    color:red;
+    bottom: 20px;
+    right: 20px;
+}
+
+.edit_trait:hover, .delete_trait:hover{
+    transform: scale(1.1);
+}
+
+.calendar_wrapper {
+    border-radius: 12px;
+    background-color: #f8f9ff;
+}
+
+.calendar_wrapper h2{
+    color: white;
+    padding: 10px;
+    background-color: rgb(0, 128, 255);
+}
+
+.calendar_grid {
+    display: grid;
+    grid-template-columns: 120px repeat(31, 1fr);
+    gap: 5px;
+    margin-top: 15px;
+    align-items: center;
+    padding: 10px;
+}
+
+.date_cell {
+    text-align: center;
+    font-weight: bold;
+}
+
+.day_cell {
+    text-align: center;
+    color: gray;
+    font-size: 12px;
+}
+
+.trait_name {
+    font-weight: bold;
+}
+
+/*====================================================== Edit Trait Dialog Box ==========================================================*/
+
+.edit_trait_dialogbox{
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    position: fixed;
+    left: 50%;
+    height: 350px;
+    width: 350px;
+    padding:20px;
+    display:none;
+    flex-direction: column;
+    z-index: 999;
+}
+
+.rename_trait{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content:left;
+    gap:10px;
+}
+
+.rename_trait input, .task_add input{
+    padding: 10px;
+    border: white;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.rename{
+    color: white;
+    background-color: green;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.task_add{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content:left;
+    gap:10px;
+}
+
+.rename:hover, .add_task:hover{
+    transform: scale(1.1);
+}
+
+.task_list{
+    overflow-y: scroll;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.task_element{
+    padding: 5px 10px;
+    border-radius: 10px;
+    border:2px solid grey;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.task_icons{
+    display: flex;
+    gap: 10px;
+}
+
+.rename_task{
+    color: rgb(0, 128, 255);
+    cursor: pointer;
+}
+
+.delete_task{
+    color: red;
+    cursor: pointer;
+}
+
+.rename_task:hover,
+.delete_task:hover{
+    transform: scale(1.1);
+}
