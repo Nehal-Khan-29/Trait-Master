@@ -524,8 +524,139 @@ document.addEventListener('click', (e) => {
 
 });
 
+/*============================================================== DOWNLOAD JSON ==============================================================*/
+
+async function downloadJSON() {
+
+    const data = JSON.stringify(traits, null, 4);
+
+    try {
+
+        /*================ USE FILE SYSTEM ACCESS API ================*/
+
+        const handle = await window.showSaveFilePicker({
+
+            suggestedName: 'trait_master_data.json',
+
+            types: [
+                {
+                    description: 'JSON File',
+                    accept: {
+                        'application/json': ['.json']
+                    }
+                }
+            ]
+
+        });
+
+        const writable = await handle.createWritable();
+
+        await writable.write(data);
+
+        await writable.close();
+
+        console.log("✓ Saved JSON to chosen location");
+
+    }
+    catch(err) {
+
+        if(err.name === 'AbortError') {
+
+            console.log("Save cancelled");
+
+        }
+        else {
+
+            console.log("Save failed:", err);
+
+        }
+
+    }
+
+}
+
+/*============================================================== LOAD JSON ==============================================================*/
+
+async function loadJSON() {
+
+    try {
+
+        const [handle] = await window.showOpenFilePicker({
+
+            types: [
+                {
+                    description: 'JSON Files',
+                    accept: {
+                        'application/json': ['.json'],
+                        'text/plain': ['.json']
+                    }
+                }
+            ],
+            excludeAcceptAllOption: false,
+            multiple: false
+
+        });
+
+        const file = await handle.getFile();
+
+        const text = await file.text();
+
+        const data = JSON.parse(text);
+
+        /*================ WARNING ================*/
+
+        const confirmed = confirm(
+            'Loading this file will replace your current data. Continue?'
+        );
+
+        if(!confirmed) return;
+
+        /*================ LOAD DATA ================*/
+
+        traits = data;
+
+        renderAllTraits();
+
+        if(traits.length > 0) {
+
+            showTrait(0);
+
+        }
+
+        saveData();
+
+        console.log("✓ Loaded JSON");
+
+    }
+    catch(err) {
+
+        console.log("Load cancelled or failed:", err);
+
+    }
+
+}
+
+/*============================================================== BUTTON HANDLERS ==============================================================*/
+
+document.querySelector('.download_data')
+.onclick = async () => {
+
+    await downloadJSON();
+
+};
+
+document.querySelector('.load_data')
+.onclick = async () => {
+
+    await loadJSON();
+
+};
+
+/*============================================================== INIT ==============================================================*/
+
 /*============================================================== INIT ==============================================================*/
 
 loadData();
 
 checkTraits();
+
