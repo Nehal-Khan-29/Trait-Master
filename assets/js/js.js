@@ -83,6 +83,8 @@ function add_trait_func() {
             }
         ],
 
+        startMonth: now.getMonth(),
+        startYear: now.getFullYear(),
         lastMonth: now.getMonth(),
         lastYear: now.getFullYear()
 
@@ -270,44 +272,69 @@ function showTrait(index) {
     const trait = traits[index];
 
     const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear  = now.getFullYear();
 
-    const container =
-        document.createElement('div');
+    /*================ DERIVE START MONTH ================*/
+    // Use stored startMonth/startYear if present.
+    // Otherwise scan all checked keys to find the earliest month.
 
-    container.className = 'calendar_container';
+    let startMonth, startYear;
 
-    while (
+    if (trait.startYear != null) {
 
-        trait.lastYear < now.getFullYear()
+        startMonth = trait.startMonth;
+        startYear  = trait.startYear;
 
-        ||
+    } else {
 
-        (
-            trait.lastYear === now.getFullYear()
-            &&
-            trait.lastMonth < now.getMonth()
-        )
+        // Fall back: find earliest key across all tasks
+        startMonth = currentMonth;
+        startYear  = currentYear;
 
-    ) {
+        trait.tasks.forEach(task => {
 
-        trait.lastMonth++;
+            Object.keys(task.checked).forEach(key => {
 
-        if(trait.lastMonth > 11) {
+                const parts = key.split('-');
+                const y = +parts[0];
+                const m = +parts[1];
 
-            trait.lastMonth = 0;
-            trait.lastYear++;
+                if (y < startYear || (y === startYear && m < startMonth)) {
+                    startYear  = y;
+                    startMonth = m;
+                }
 
-        }
+            });
+
+        });
+
+        // Cache it so we don't recalculate next time
+        trait.startMonth = startMonth;
+        trait.startYear  = startYear;
 
     }
 
-    container.appendChild(
-        createCalendar(
-            index,
-            trait.lastMonth,
-            trait.lastYear
-        )
-    );
+    // Also update lastMonth/lastYear to today
+    trait.lastMonth = currentMonth;
+    trait.lastYear  = currentYear;
+
+    /*================ BUILD ALL MONTHS ================*/
+
+    const container = document.createElement('div');
+    container.className = 'calendar_container';
+
+    let m = startMonth;
+    let y = startYear;
+
+    while (y < currentYear || (y === currentYear && m <= currentMonth)) {
+
+        container.appendChild(createCalendar(index, m, y));
+
+        m++;
+        if (m > 11) { m = 0; y++; }
+
+    }
 
     calendarList.appendChild(container);
 
