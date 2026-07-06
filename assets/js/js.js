@@ -96,6 +96,32 @@ function add_trait_func() {
 
 }
 
+/*============================================================== STATE CELL HELPER ==============================================================*/
+
+/*
+    States:
+    0 = unchecked (empty)
+    1 = done      (green ✓)
+    2 = failed    (red ✗)
+    3 = skipped   (grey −)
+*/
+function applyStateCell(cell, state) {
+
+    const configs = [
+        { icon: '',    cls: '' },
+        { icon: '✓',   cls: 'state_done' },
+        { icon: '✗',   cls: 'state_fail' },
+        { icon: '−',   cls: 'state_skip' }
+    ];
+
+    cell.classList.remove('state_done', 'state_fail', 'state_skip');
+
+    const cfg = configs[state];
+    cell.textContent = cfg.icon;
+    if(cfg.cls) cell.classList.add(cfg.cls);
+
+}
+
 /*============================================================== CREATE CALENDAR ==============================================================*/
 
 function createCalendar(traitIndex, month = null, year = null) {
@@ -187,19 +213,15 @@ function createCalendar(traitIndex, month = null, year = null) {
 
             const key = `${year}-${month}-${d}`;
 
-            const checked =
-                task.checked[key]
-                ? 'checked'
-                : '';
+            const state = task.checked[key] || 0;
 
-            grid.innerHTML += `
-                <input
-                    type="checkbox"
-                    data-task="${taskIndex}"
-                    data-date="${key}"
-                    ${checked}
-                >
-            `;
+            const cell = document.createElement('div');
+            cell.className = 'state_cell';
+            cell.dataset.task = taskIndex;
+            cell.dataset.date = key;
+            cell.dataset.state = state;
+            applyStateCell(cell, state);
+            grid.appendChild(cell);
 
         }
 
@@ -207,21 +229,22 @@ function createCalendar(traitIndex, month = null, year = null) {
 
     wrapper.appendChild(grid);
 
-    /*================ SAVE CHECKBOXES ================*/
+    /*================ SAVE STATE CELLS ================*/
 
-    grid.querySelectorAll(
-        'input[type="checkbox"]'
-    ).forEach(box => {
+    grid.querySelectorAll('.state_cell').forEach(cell => {
 
-        box.addEventListener('change', function() {
+        cell.addEventListener('click', function() {
 
             const taskIndex = this.dataset.task;
-
             const date = this.dataset.date;
+            const next = ((+this.dataset.state) + 1) % 4;
+
+            this.dataset.state = next;
+            applyStateCell(this, next);
 
             traits[currentTraitIndex]
                 .tasks[taskIndex]
-                .checked[date] = this.checked;
+                .checked[date] = next;
 
             saveData();
 
@@ -659,4 +682,3 @@ document.querySelector('.load_data')
 loadData();
 
 checkTraits();
-
